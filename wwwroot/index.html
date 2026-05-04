@@ -6,709 +6,897 @@
     <title>Secure API Gateway</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
     <style>
-              :root {
-                  --bg: #0a0e1a;
-                  --bg2: #111827;
-                  --bg3: #1a2235;
-                  --accent: #00d4aa;
-                  --accent2: #0066ff;
-                  --danger: #ff4d6d;
-                  --warning: #ffb703;
-                  --text: #f0f4ff;
-                  --text2: #8892a4;
-                  --border: rgba(255,255,255,0.08);
-                  --radius: 12px;
-                  --mono: 'Space Mono', monospace;
-                  --sans: 'DM Sans', sans-serif;
-              }
-
-              * {
-                  margin: 0;
-                  padding: 0;
-                  box-sizing: border-box;
-              }
-
-              body {
-                  font-family: var(--sans);
-                  background: var(--bg);
-                  color: var(--text);
-                  min-height: 100vh;
-                  overflow-x: hidden;
-              }
-
-                  /* ── BACKGROUND GRID ── */
-                  body::before {
-                      content: '';
-                      position: fixed;
-                      inset: 0;
-                      background-image: linear-gradient(rgba(0,212,170,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,212,170,0.03) 1px, transparent 1px);
-                      background-size: 40px 40px;
-                      pointer-events: none;
-                      z-index: 0;
-                  }
-
-              .page {
-                  position: relative;
-                  z-index: 1;
-              }
-
-              /* ══════════════════════════════════════════
-           LOGIN PAGE
-        ══════════════════════════════════════════ */
-              #loginPage {
-                  min-height: 100vh;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  padding: 2rem;
-              }
-
-              .login-wrap {
-                  width: 100%;
-                  max-width: 420px;
-              }
-
-              .login-logo {
-                  text-align: center;
-                  margin-bottom: 2.5rem;
-              }
-
-                  .login-logo .shield {
-                      width: 64px;
-                      height: 64px;
-                      margin: 0 auto 1rem;
-                      background: linear-gradient(135deg, var(--accent), var(--accent2));
-                      border-radius: 16px;
-                      display: flex;
-                      align-items: center;
-                      justify-content: center;
-                      font-size: 28px;
-                  }
-
-                  .login-logo h1 {
-                      font-family: var(--mono);
-                      font-size: 1.1rem;
-                      color: var(--accent);
-                      letter-spacing: 0.15em;
-                      text-transform: uppercase;
-                  }
-
-                  .login-logo p {
-                      font-size: 0.85rem;
-                      color: var(--text2);
-                      margin-top: 0.4rem;
-                  }
-
-              .card {
-                  background: var(--bg2);
-                  border: 1px solid var(--border);
-                  border-radius: var(--radius);
-                  padding: 2rem;
-              }
-
-                  .card h2 {
-                      font-size: 1.25rem;
-                      font-weight: 600;
-                      margin-bottom: 0.4rem;
-                  }
-
-                  .card .sub {
-                      font-size: 0.875rem;
-                      color: var(--text2);
-                      margin-bottom: 1.75rem;
-                  }
-
-              .field {
-                  margin-bottom: 1.25rem;
-              }
-
-                  .field label {
-                      display: block;
-                      font-size: 0.8rem;
-                      color: var(--text2);
-                      letter-spacing: 0.05em;
-                      text-transform: uppercase;
-                      margin-bottom: 0.5rem;
-                  }
-
-                  .field input {
-                      width: 100%;
-                      background: var(--bg3);
-                      border: 1px solid var(--border);
-                      border-radius: 8px;
-                      padding: 0.75rem 1rem;
-                      color: var(--text);
-                      font-family: var(--sans);
-                      font-size: 0.95rem;
-                      transition: border-color 0.2s, box-shadow 0.2s;
-                  }
-
-                      .field input:focus {
-                          outline: none;
-                          border-color: var(--accent);
-                          box-shadow: 0 0 0 3px rgba(0,212,170,0.1);
-                      }
-
-              .btn-primary {
-                  width: 100%;
-                  padding: 0.875rem;
-                  background: var(--accent);
-                  color: #0a0e1a;
-                  border: none;
-                  border-radius: 8px;
-                  font-family: var(--sans);
-                  font-size: 0.95rem;
-                  font-weight: 600;
-                  cursor: pointer;
-                  transition: opacity 0.2s, transform 0.1s;
-                  letter-spacing: 0.02em;
-              }
-
-                  .btn-primary:hover {
-                      opacity: 0.9;
-                  }
-
-                  .btn-primary:active {
-                      transform: scale(0.99);
-                  }
-
-                  .btn-primary:disabled {
-                      opacity: 0.5;
-                      cursor: not-allowed;
-                  }
-
-              .error-msg {
-                  background: rgba(255,77,109,0.12);
-                  border: 1px solid rgba(255,77,109,0.3);
-                  border-radius: 8px;
-                  padding: 0.75rem 1rem;
-                  font-size: 0.875rem;
-                  color: var(--danger);
-                  margin-bottom: 1rem;
-                  display: none;
-              }
-
-              .hint {
-                  text-align: center;
-                  margin-top: 1.25rem;
-                  font-size: 0.8rem;
-                  color: var(--text2);
-              }
-
-                  .hint code {
-                      background: var(--bg3);
-                      padding: 0.15rem 0.5rem;
-                      border-radius: 4px;
-                      font-family: var(--mono);
-                      font-size: 0.78rem;
-                      color: var(--accent);
-                  }
-
-              /* ══════════════════════════════════════════
-           DASHBOARD
-        ══════════════════════════════════════════ */
-              #dashboard {
-                  display: none;
-                  min-height: 100vh;
-              }
-
-              /* NAV */
-              nav {
-                  background: var(--bg2);
-                  border-bottom: 1px solid var(--border);
-                  padding: 0 2rem;
-                  display: flex;
-                  align-items: center;
-                  justify-content: space-between;
-                  height: 60px;
-                  position: sticky;
-                  top: 0;
-                  z-index: 100;
-              }
-
-              .nav-left {
-                  display: flex;
-                  align-items: center;
-                  gap: 0.75rem;
-              }
-
-              .nav-shield {
-                  width: 32px;
-                  height: 32px;
-                  background: linear-gradient(135deg, var(--accent), var(--accent2));
-                  border-radius: 8px;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  font-size: 14px;
-              }
-
-              .nav-title {
-                  font-family: var(--mono);
-                  font-size: 0.85rem;
-                  color: var(--accent);
-                  letter-spacing: 0.1em;
-              }
-
-              .nav-right {
-                  display: flex;
-                  align-items: center;
-                  gap: 1rem;
-              }
-
-              .user-badge {
-                  display: flex;
-                  align-items: center;
-                  gap: 0.5rem;
-                  background: var(--bg3);
-                  border: 1px solid var(--border);
-                  border-radius: 20px;
-                  padding: 0.3rem 0.75rem;
-                  font-size: 0.8rem;
-              }
-
-              .user-dot {
-                  width: 7px;
-                  height: 7px;
-                  border-radius: 50%;
-                  background: var(--accent);
-              }
-
-              .btn-logout {
-                  background: transparent;
-                  border: 1px solid var(--border);
-                  color: var(--text2);
-                  padding: 0.35rem 0.875rem;
-                  border-radius: 6px;
-                  font-size: 0.8rem;
-                  cursor: pointer;
-                  font-family: var(--sans);
-                  transition: border-color 0.2s, color 0.2s;
-              }
-
-                  .btn-logout:hover {
-                      border-color: var(--danger);
-                      color: var(--danger);
-                  }
-
-              /* MAIN */
-              .main {
-                  max-width: 1100px;
-                  margin: 0 auto;
-                  padding: 2rem;
-              }
-
-              /* TOKEN BANNER */
-              .token-banner {
-                  background: var(--bg2);
-                  border: 1px solid rgba(0,212,170,0.2);
-                  border-radius: var(--radius);
-                  padding: 1rem 1.25rem;
-                  margin-bottom: 2rem;
-                  display: flex;
-                  align-items: center;
-                  gap: 1rem;
-              }
-
-              .token-label {
-                  font-size: 0.75rem;
-                  color: var(--accent);
-                  font-family: var(--mono);
-                  letter-spacing: 0.08em;
-                  white-space: nowrap;
-              }
-
-              .token-val {
-                  font-family: var(--mono);
-                  font-size: 0.72rem;
-                  color: var(--text2);
-                  flex: 1;
-                  overflow: hidden;
-                  text-overflow: ellipsis;
-                  white-space: nowrap;
-              }
-
-              .btn-copy {
-                  background: var(--bg3);
-                  border: 1px solid var(--border);
-                  color: var(--text2);
-                  padding: 0.3rem 0.75rem;
-                  border-radius: 6px;
-                  font-size: 0.78rem;
-                  cursor: pointer;
-                  font-family: var(--sans);
-                  white-space: nowrap;
-                  transition: all 0.2s;
-              }
-
-                  .btn-copy:hover {
-                      border-color: var(--accent);
-                      color: var(--accent);
-                  }
-
-              /* STATS */
-              .stats {
-                  display: grid;
-                  grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
-                  gap: 1rem;
-                  margin-bottom: 2rem;
-              }
-
-              .stat-card {
-                  background: var(--bg2);
-                  border: 1px solid var(--border);
-                  border-radius: var(--radius);
-                  padding: 1.25rem;
-              }
-
-              .stat-label {
-                  font-size: 0.75rem;
-                  color: var(--text2);
-                  text-transform: uppercase;
-                  letter-spacing: 0.08em;
-                  margin-bottom: 0.5rem;
-              }
-
-              .stat-val {
-                  font-family: var(--mono);
-                  font-size: 1.6rem;
-                  font-weight: 700;
-              }
-
-                  .stat-val.green {
-                      color: var(--accent);
-                  }
-
-                  .stat-val.blue {
-                      color: var(--accent2);
-                  }
-
-                  .stat-val.red {
-                      color: var(--danger);
-                  }
-
-                  .stat-val.amber {
-                      color: var(--warning);
-                  }
-
-              /* TWO COLUMN */
-              .two-col {
-                  display: grid;
-                  grid-template-columns: 1fr 1fr;
-                  gap: 1.5rem;
-                  margin-bottom: 2rem;
-              }
-
-              @media(max-width:720px) {
-                  .two-col {
-                      grid-template-columns: 1fr;
-                  }
-              }
-
-              .panel {
-                  background: var(--bg2);
-                  border: 1px solid var(--border);
-                  border-radius: var(--radius);
-                  padding: 1.5rem;
-              }
-
-              .panel-title {
-                  font-size: 0.8rem;
-                  color: var(--text2);
-                  text-transform: uppercase;
-                  letter-spacing: 0.1em;
-                  margin-bottom: 1.25rem;
-                  display: flex;
-                  align-items: center;
-                  gap: 0.5rem;
-              }
-
-                  .panel-title::before {
-                      content: '';
-                      width: 3px;
-                      height: 14px;
-                      background: var(--accent);
-                      border-radius: 2px;
-                  }
-
-              /* GATEWAY TESTER */
-              .method-row {
-                  display: flex;
-                  gap: 0.5rem;
-                  margin-bottom: 1rem;
-                  flex-wrap: wrap;
-              }
-
-              .method-btn {
-                  padding: 0.35rem 0.875rem;
-                  border-radius: 6px;
-                  border: 1px solid var(--border);
-                  font-size: 0.78rem;
-                  font-family: var(--mono);
-                  cursor: pointer;
-                  background: var(--bg3);
-                  color: var(--text2);
-                  transition: all 0.15s;
-              }
-
-                  .method-btn.active-get {
-                      background: rgba(0,212,170,0.15);
-                      border-color: var(--accent);
-                      color: var(--accent);
-                  }
-
-                  .method-btn.active-post {
-                      background: rgba(0,102,255,0.15);
-                      border-color: var(--accent2);
-                      color: var(--accent2);
-                  }
-
-                  .method-btn.active-put {
-                      background: rgba(255,183,3,0.15);
-                      border-color: var(--warning);
-                      color: var(--warning);
-                  }
-
-                  .method-btn.active-delete {
-                      background: rgba(255,77,109,0.15);
-                      border-color: var(--danger);
-                      color: var(--danger);
-                  }
-
-              .path-row {
-                  display: flex;
-                  gap: 0.5rem;
-                  margin-bottom: 1rem;
-              }
-
-                  .path-row input {
-                      flex: 1;
-                      background: var(--bg3);
-                      border: 1px solid var(--border);
-                      border-radius: 8px;
-                      padding: 0.6rem 0.875rem;
-                      color: var(--text);
-                      font-family: var(--mono);
-                      font-size: 0.82rem;
-                      transition: border-color 0.2s;
-                  }
-
-                      .path-row input:focus {
-                          outline: none;
-                          border-color: var(--accent);
-                      }
-
-              .btn-send {
-                  background: var(--accent);
-                  color: #0a0e1a;
-                  border: none;
-                  border-radius: 8px;
-                  padding: 0.6rem 1.25rem;
-                  font-family: var(--sans);
-                  font-weight: 600;
-                  font-size: 0.875rem;
-                  cursor: pointer;
-                  white-space: nowrap;
-                  transition: opacity 0.2s;
-              }
-
-                  .btn-send:hover {
-                      opacity: 0.85;
-                  }
-
-              .response-box {
-                  background: var(--bg);
-                  border: 1px solid var(--border);
-                  border-radius: 8px;
-                  padding: 1rem;
-                  min-height: 80px;
-                  font-family: var(--mono);
-                  font-size: 0.78rem;
-                  line-height: 1.6;
-                  color: var(--text2);
-                  white-space: pre-wrap;
-                  word-break: break-all;
-              }
-
-              .status-pill {
-                  display: inline-block;
-                  padding: 0.2rem 0.6rem;
-                  border-radius: 20px;
-                  font-family: var(--mono);
-                  font-size: 0.72rem;
-                  font-weight: 700;
-                  margin-bottom: 0.75rem;
-              }
-
-              .s-2xx {
-                  background: rgba(0,212,170,0.15);
-                  color: var(--accent);
-              }
-
-              .s-4xx {
-                  background: rgba(255,77,109,0.15);
-                  color: var(--danger);
-              }
-
-              .s-5xx {
-                  background: rgba(255,183,3,0.15);
-                  color: var(--warning);
-              }
-
-              /* LOG */
-              .log-list {
-                  display: flex;
-                  flex-direction: column;
-                  gap: 0.5rem;
-                  max-height: 280px;
-                  overflow-y: auto;
-              }
-
-              .log-item {
-                  display: flex;
-                  align-items: center;
-                  gap: 0.75rem;
-                  padding: 0.5rem 0.75rem;
-                  background: var(--bg3);
-                  border-radius: 6px;
-                  font-size: 0.78rem;
-              }
-
-              .log-method {
-                  font-family: var(--mono);
-                  font-size: 0.7rem;
-                  min-width: 38px;
-                  font-weight: 700;
-              }
-
-              .log-path {
-                  flex: 1;
-                  color: var(--text2);
-                  font-family: var(--mono);
-                  overflow: hidden;
-                  text-overflow: ellipsis;
-                  white-space: nowrap;
-              }
-
-              .log-status {
-                  font-family: var(--mono);
-                  font-size: 0.72rem;
-                  font-weight: 700;
-              }
-
-              .log-time {
-                  color: var(--text2);
-                  font-size: 0.7rem;
-                  white-space: nowrap;
-              }
-
-              .s2 {
-                  color: var(--accent);
-              }
-
-              .s4 {
-                  color: var(--danger);
-              }
-
-              .empty-log {
-                  color: var(--text2);
-                  font-size: 0.85rem;
-                  text-align: center;
-                  padding: 1.5rem 0;
-              }
-
-              /* QUICK ACTIONS */
-              .quick-list {
-                  display: flex;
-                  flex-direction: column;
-                  gap: 0.5rem;
-              }
-
-              .quick-btn {
-                  background: var(--bg3);
-                  border: 1px solid var(--border);
-                  border-radius: 8px;
-                  padding: 0.75rem 1rem;
-                  cursor: pointer;
-                  text-align: left;
-                  font-family: var(--sans);
-                  transition: border-color 0.2s, background 0.2s;
-                  display: flex;
-                  align-items: center;
-                  gap: 0.75rem;
-              }
-
-                  .quick-btn:hover {
-                      border-color: var(--accent);
-                      background: rgba(0,212,170,0.05);
-                  }
-
-              .quick-icon {
-                  font-size: 1rem;
-                  width: 22px;
-                  text-align: center;
-              }
-
-              .quick-label {
-                  font-size: 0.875rem;
-                  color: var(--text);
-              }
-
-              .quick-desc {
-                  font-size: 0.75rem;
-                  color: var(--text2);
-              }
-
-              /* SPINNER */
-              @keyframes spin {
-                  to {
-                      transform: rotate(360deg);
-                  }
-              }
-
-              .spinner {
-                  display: inline-block;
-                  width: 14px;
-                  height: 14px;
-                  border: 2px solid rgba(0,212,170,0.3);
-                  border-top-color: var(--accent);
-                  border-radius: 50%;
-                  animation: spin 0.7s linear infinite;
-                  vertical-align: middle;
-                  margin-right: 0.4rem;
-              }
-
-              /* FADE IN */
-              @keyframes fadeUp {
-                  from {
-                      opacity: 0;
-                      transform: translateY(16px);
-                  }
-
-                  to {
-                      opacity: 1;
-                      transform: translateY(0);
-                  }
-              }
-
-              .fade-in {
-                  animation: fadeUp 0.4s ease both;
-              }
-
-              .fade-in-2 {
-                  animation: fadeUp 0.4s ease 0.1s both;
-              }
-
-              .fade-in-3 {
-                  animation: fadeUp 0.4s ease 0.2s both;
-              }
+        :root {
+            --bg: #0a0e1a;
+            --bg2: #111827;
+            --bg3: #1a2235;
+            --accent: #00d4aa;
+            --accent2: #0066ff;
+            --danger: #ff4d6d;
+            --warning: #ffb703;
+            --patch: #a855f7;
+            --text: #f0f4ff;
+            --text2: #8892a4;
+            --border: rgba(255,255,255,0.08);
+            --radius: 12px;
+            --mono: 'Space Mono', monospace;
+            --sans: 'DM Sans', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--sans);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+            body::before {
+                content: '';
+                position: fixed;
+                inset: 0;
+                background-image: linear-gradient(rgba(0,212,170,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,212,170,0.03) 1px, transparent 1px);
+                background-size: 40px 40px;
+                pointer-events: none;
+                z-index: 0;
+            }
+
+        .page {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── LOGIN ── */
+        #loginPage {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .login-wrap {
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .login-logo {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+            .login-logo .shield {
+                width: 64px;
+                height: 64px;
+                margin: 0 auto 1rem;
+                background: linear-gradient(135deg, var(--accent), var(--accent2));
+                border-radius: 16px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 28px;
+            }
+
+            .login-logo h1 {
+                font-family: var(--mono);
+                font-size: 1.1rem;
+                color: var(--accent);
+                letter-spacing: 0.15em;
+                text-transform: uppercase;
+            }
+
+            .login-logo p {
+                font-size: 0.85rem;
+                color: var(--text2);
+                margin-top: 0.4rem;
+            }
+
+        .card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2rem;
+        }
+
+            .card h2 {
+                font-size: 1.25rem;
+                font-weight: 600;
+                margin-bottom: 0.4rem;
+            }
+
+            .card .sub {
+                font-size: 0.875rem;
+                color: var(--text2);
+                margin-bottom: 1.75rem;
+            }
+
+        .field {
+            margin-bottom: 1.25rem;
+        }
+
+            .field label {
+                display: block;
+                font-size: 0.8rem;
+                color: var(--text2);
+                letter-spacing: 0.05em;
+                text-transform: uppercase;
+                margin-bottom: 0.5rem;
+            }
+
+            .field input {
+                width: 100%;
+                background: var(--bg3);
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                padding: 0.75rem 1rem;
+                color: var(--text);
+                font-family: var(--sans);
+                font-size: 0.95rem;
+                transition: border-color 0.2s, box-shadow 0.2s;
+            }
+
+                .field input:focus {
+                    outline: none;
+                    border-color: var(--accent);
+                    box-shadow: 0 0 0 3px rgba(0,212,170,0.1);
+                }
+
+        .btn-primary {
+            width: 100%;
+            padding: 0.875rem;
+            background: var(--accent);
+            color: #0a0e1a;
+            border: none;
+            border-radius: 8px;
+            font-family: var(--sans);
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.1s;
+            letter-spacing: 0.02em;
+        }
+
+            .btn-primary:hover {
+                opacity: 0.9;
+            }
+
+            .btn-primary:active {
+                transform: scale(0.99);
+            }
+
+            .btn-primary:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+
+        .error-msg {
+            background: rgba(255,77,109,0.12);
+            border: 1px solid rgba(255,77,109,0.3);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+            color: var(--danger);
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .hint {
+            text-align: center;
+            margin-top: 1.25rem;
+            font-size: 0.8rem;
+            color: var(--text2);
+        }
+
+            .hint code {
+                background: var(--bg3);
+                padding: 0.15rem 0.5rem;
+                border-radius: 4px;
+                font-family: var(--mono);
+                font-size: 0.78rem;
+                color: var(--accent);
+            }
+
+        /* ── DASHBOARD ── */
+        #dashboard {
+            display: none;
+            min-height: 100vh;
+        }
+
+        nav {
+            background: var(--bg2);
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .nav-shield {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .nav-title {
+            font-family: var(--mono);
+            font-size: 0.85rem;
+            color: var(--accent);
+            letter-spacing: 0.1em;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 0.3rem 0.75rem;
+            font-size: 0.8rem;
+        }
+
+        .user-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
+        .btn-logout {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text2);
+            padding: 0.35rem 0.875rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-family: var(--sans);
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+            .btn-logout:hover {
+                border-color: var(--danger);
+                color: var(--danger);
+            }
+
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .token-banner {
+            background: var(--bg2);
+            border: 1px solid rgba(0,212,170,0.2);
+            border-radius: var(--radius);
+            padding: 1rem 1.25rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .token-label {
+            font-size: 0.75rem;
+            color: var(--accent);
+            font-family: var(--mono);
+            letter-spacing: 0.08em;
+            white-space: nowrap;
+        }
+
+        .token-val {
+            font-family: var(--mono);
+            font-size: 0.72rem;
+            color: var(--text2);
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .btn-copy {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            color: var(--text2);
+            padding: 0.3rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            cursor: pointer;
+            font-family: var(--sans);
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+            .btn-copy:hover {
+                border-color: var(--accent);
+                color: var(--accent);
+            }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px,1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text2);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-val {
+            font-family: var(--mono);
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+            .stat-val.green {
+                color: var(--accent);
+            }
+
+            .stat-val.blue {
+                color: var(--accent2);
+            }
+
+            .stat-val.red {
+                color: var(--danger);
+            }
+
+            .stat-val.amber {
+                color: var(--warning);
+            }
+
+        /* ── LAYOUT ── */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        @media(max-width:900px) {
+            .two-col {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+        }
+
+        .panel-title {
+            font-size: 0.8rem;
+            color: var(--text2);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+            .panel-title::before {
+                content: '';
+                width: 3px;
+                height: 14px;
+                background: var(--accent);
+                border-radius: 2px;
+            }
+
+        /* ── METHOD BUTTONS ── */
+        .method-row {
+            display: flex;
+            gap: 0.4rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .method-btn {
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            font-size: 0.75rem;
+            font-family: var(--mono);
+            cursor: pointer;
+            background: var(--bg3);
+            color: var(--text2);
+            transition: all 0.15s;
+        }
+
+            .method-btn.active-get {
+                background: rgba(0,212,170,0.15);
+                border-color: var(--accent);
+                color: var(--accent);
+            }
+
+            .method-btn.active-post {
+                background: rgba(0,102,255,0.15);
+                border-color: var(--accent2);
+                color: var(--accent2);
+            }
+
+            .method-btn.active-put {
+                background: rgba(255,183,3,0.15);
+                border-color: var(--warning);
+                color: var(--warning);
+            }
+
+            .method-btn.active-patch {
+                background: rgba(168,85,247,0.15);
+                border-color: var(--patch);
+                color: var(--patch);
+            }
+
+            .method-btn.active-delete {
+                background: rgba(255,77,109,0.15);
+                border-color: var(--danger);
+                color: var(--danger);
+            }
+
+        .path-row {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+            .path-row input {
+                flex: 1;
+                background: var(--bg3);
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                padding: 0.6rem 0.875rem;
+                color: var(--text);
+                font-family: var(--mono);
+                font-size: 0.82rem;
+                transition: border-color 0.2s;
+            }
+
+                .path-row input:focus {
+                    outline: none;
+                    border-color: var(--accent);
+                }
+
+        .btn-send {
+            background: var(--accent);
+            color: #0a0e1a;
+            border: none;
+            border-radius: 8px;
+            padding: 0.6rem 1.25rem;
+            font-family: var(--sans);
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: opacity 0.2s;
+        }
+
+            .btn-send:hover {
+                opacity: 0.85;
+            }
+
+        /* ── BODY EDITOR ── */
+        .body-editor-wrap {
+            margin-bottom: 0.75rem;
+        }
+
+        .body-editor-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.4rem;
+        }
+
+        .body-editor-label {
+            font-size: 0.75rem;
+            color: var(--text2);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .body-editor-actions {
+            display: flex;
+            gap: 0.4rem;
+        }
+
+        .btn-tiny {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            color: var(--text2);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            font-family: var(--mono);
+            transition: all 0.15s;
+        }
+
+            .btn-tiny:hover {
+                border-color: var(--accent);
+                color: var(--accent);
+            }
+
+        #bodyEditor {
+            width: 100%;
+            min-height: 120px;
+            max-height: 220px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.75rem;
+            color: var(--text);
+            font-family: var(--mono);
+            font-size: 0.78rem;
+            line-height: 1.6;
+            resize: vertical;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            display: none;
+        }
+
+            #bodyEditor:focus {
+                outline: none;
+                border-color: var(--accent);
+                box-shadow: 0 0 0 2px rgba(0,212,170,0.08);
+            }
+
+            #bodyEditor.visible {
+                display: block;
+            }
+
+            #bodyEditor.json-valid {
+                border-color: rgba(0,212,170,0.4);
+            }
+
+            #bodyEditor.json-invalid {
+                border-color: rgba(255,77,109,0.4);
+            }
+
+        .json-status {
+            font-size: 0.7rem;
+            margin-top: 0.25rem;
+            margin-bottom: 0.5rem;
+            height: 14px;
+            font-family: var(--mono);
+        }
+
+        .json-ok {
+            color: var(--accent);
+        }
+
+        .json-err {
+            color: var(--danger);
+        }
+
+        /* ── RESPONSE ── */
+        .response-box {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            min-height: 80px;
+            font-family: var(--mono);
+            font-size: 0.78rem;
+            line-height: 1.6;
+            color: var(--text2);
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .status-pill {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-family: var(--mono);
+            font-size: 0.72rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .s-2xx {
+            background: rgba(0,212,170,0.15);
+            color: var(--accent);
+        }
+
+        .s-4xx {
+            background: rgba(255,77,109,0.15);
+            color: var(--danger);
+        }
+
+        .s-5xx {
+            background: rgba(255,183,3,0.15);
+            color: var(--warning);
+        }
+
+        /* ── QUICK TESTS TABS ── */
+        .tab-row {
+            display: flex;
+            gap: 0.4rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 0.3rem 0.7rem;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            font-size: 0.72rem;
+            font-family: var(--mono);
+            cursor: pointer;
+            background: var(--bg3);
+            color: var(--text2);
+            transition: all 0.15s;
+        }
+
+            .tab-btn.active {
+                background: rgba(0,212,170,0.12);
+                border-color: var(--accent);
+                color: var(--accent);
+            }
+
+        .quick-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .quick-btn {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.65rem 0.875rem;
+            cursor: pointer;
+            text-align: left;
+            font-family: var(--sans);
+            transition: border-color 0.2s, background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+            .quick-btn:hover {
+                border-color: var(--accent);
+                background: rgba(0,212,170,0.05);
+            }
+
+        .quick-icon {
+            font-size: 0.95rem;
+            width: 20px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .quick-label {
+            font-size: 0.82rem;
+            color: var(--text);
+        }
+
+        .quick-desc {
+            font-size: 0.72rem;
+            color: var(--text2);
+        }
+
+        .quick-method {
+            font-family: var(--mono);
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 0.1rem 0.35rem;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+
+        .qm-get {
+            background: rgba(0,212,170,0.15);
+            color: var(--accent);
+        }
+
+        .qm-post {
+            background: rgba(0,102,255,0.15);
+            color: var(--accent2);
+        }
+
+        .qm-put {
+            background: rgba(255,183,3,0.15);
+            color: var(--warning);
+        }
+
+        .qm-patch {
+            background: rgba(168,85,247,0.15);
+            color: var(--patch);
+        }
+
+        .qm-delete {
+            background: rgba(255,77,109,0.15);
+            color: var(--danger);
+        }
+
+        /* ── LOG ── */
+        .log-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            max-height: 240px;
+            overflow-y: auto;
+        }
+
+        .log-item {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.45rem 0.75rem;
+            background: var(--bg3);
+            border-radius: 6px;
+            font-size: 0.75rem;
+        }
+
+        .log-method {
+            font-family: var(--mono);
+            font-size: 0.68rem;
+            min-width: 42px;
+            font-weight: 700;
+        }
+
+        .log-path {
+            flex: 1;
+            color: var(--text2);
+            font-family: var(--mono);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .log-status {
+            font-family: var(--mono);
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .log-time {
+            color: var(--text2);
+            font-size: 0.68rem;
+            white-space: nowrap;
+        }
+
+        .s2 {
+            color: var(--accent);
+        }
+
+        .s4 {
+            color: var(--danger);
+        }
+
+        .empty-log {
+            color: var(--text2);
+            font-size: 0.85rem;
+            text-align: center;
+            padding: 1.5rem 0;
+        }
+
+        /* ── SPINNER / ANIMATIONS ── */
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(0,212,170,0.3);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            vertical-align: middle;
+            margin-right: 0.4rem;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeUp 0.4s ease both;
+        }
+
+        .fade-in-2 {
+            animation: fadeUp 0.4s ease 0.1s both;
+        }
+
+        .fade-in-3 {
+            animation: fadeUp 0.4s ease 0.2s both;
+        }
+
+        /* ── SECURITY LEGEND ── */
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.72rem;
+            color: var(--text2);
+            padding: 0.2rem 0.5rem;
+            background: var(--bg3);
+            border-radius: 4px;
+            border: 1px solid var(--border);
+        }
+
+        .legend-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        /* scrollbar */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body class="page">
 
-    <!-- ══════════════════════════════════════════
-         LOGIN PAGE
-    ══════════════════════════════════════════ -->
+    <!-- ══════ LOGIN ══════ -->
     <div id="loginPage">
         <div class="login-wrap fade-in">
             <div class="login-logo">
@@ -736,9 +924,7 @@
         </div>
     </div>
 
-    <!-- ══════════════════════════════════════════
-         DASHBOARD
-    ══════════════════════════════════════════ -->
+    <!-- ══════ DASHBOARD ══════ -->
     <div id="dashboard">
         <nav>
             <div class="nav-left">
@@ -756,6 +942,7 @@
         </nav>
 
         <div class="main">
+
             <!-- Token Banner -->
             <div class="token-banner fade-in">
                 <span class="token-label">JWT TOKEN</span>
@@ -770,7 +957,7 @@
                     <div class="stat-val blue" id="statTotal">0</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-label">Successful</div>
+                    <div class="stat-label">Successful (2xx)</div>
                     <div class="stat-val green" id="statOk">0</div>
                 </div>
                 <div class="stat-card">
@@ -778,89 +965,180 @@
                     <div class="stat-val red" id="statFail">0</div>
                 </div>
                 <div class="stat-card">
+                    <div class="stat-label">Last Status</div>
+                    <div class="stat-val amber" id="statLast">—</div>
+                </div>
+                <div class="stat-card">
                     <div class="stat-label">Token Expires In</div>
                     <div class="stat-val amber" id="statExpiry">—</div>
                 </div>
             </div>
 
-            <!-- Two column -->
+            <!-- Main grid -->
             <div class="two-col fade-in-3">
 
-                <!-- Gateway Tester -->
+                <!-- ── Gateway Tester ── -->
                 <div class="panel">
                     <div class="panel-title">Gateway Tester</div>
+
+                    <!-- Method selector -->
                     <div class="method-row">
-                        <button class="method-btn active-get" onclick="setMethod('GET',this)">GET</button>
-                        <button class="method-btn" onclick="setMethod('POST',this)">POST</button>
-                        <button class="method-btn" onclick="setMethod('PUT',this)">PUT</button>
-                        <button class="method-btn" onclick="setMethod('DELETE',this)">DELETE</button>
+                        <button class="method-btn active-get" id="btn-GET" onclick="setMethod('GET',this)">GET</button>
+                        <button class="method-btn" id="btn-POST" onclick="setMethod('POST',this)">POST</button>
+                        <button class="method-btn" id="btn-PUT" onclick="setMethod('PUT',this)">PUT</button>
+                        <button class="method-btn" id="btn-PATCH" onclick="setMethod('PATCH',this)">PATCH</button>
+                        <button class="method-btn" id="btn-DELETE" onclick="setMethod('DELETE',this)">DELETE</button>
                     </div>
+
+                    <!-- Path -->
                     <div class="path-row">
                         <input type="text" id="pathInput" value="/api/Gateway" placeholder="/api/Gateway" />
-                        <button class="btn-send" onclick="sendRequest()">Send</button>
+                        <button class="btn-send" onclick="sendRequest()">Send ▶</button>
                     </div>
+
+                    <!-- Body editor (shown for POST / PUT / PATCH) -->
+                    <div class="body-editor-wrap" id="bodyWrap">
+                        <div class="body-editor-header">
+                            <span class="body-editor-label">Request Body (JSON)</span>
+                            <div class="body-editor-actions">
+                                <button class="btn-tiny" onclick="formatJson()">Format</button>
+                                <button class="btn-tiny" onclick="clearBody()">Clear</button>
+                            </div>
+                        </div>
+                        <textarea id="bodyEditor" spellcheck="false" placeholder='{ "key": "value" }'></textarea>
+                        <div class="json-status" id="jsonStatus"></div>
+                    </div>
+
+                    <!-- Response -->
                     <div id="responseArea" class="response-box">Response will appear here…</div>
+
+                    <!-- Security layer legend -->
+                    <div class="legend">
+                        <div class="legend-item"><div class="legend-dot" style="background:var(--accent2)"></div> JWT Auth</div>
+                        <div class="legend-item"><div class="legend-dot" style="background:var(--warning)"></div> Rate Limiting</div>
+                        <div class="legend-item"><div class="legend-dot" style="background:var(--danger)"></div> Input Validation</div>
+                        <div class="legend-item"><div class="legend-dot" style="background:var(--patch)"></div> AI Detection</div>
+                    </div>
                 </div>
 
-                <!-- Right column -->
+                <!-- ── Right column ── -->
                 <div style="display:flex;flex-direction:column;gap:1.5rem;">
 
-                    <!-- Quick actions -->
+                    <!-- Quick Tests -->
                     <div class="panel">
                         <div class="panel-title">Quick Tests</div>
-                        <div class="quick-list">
-                            <button class="quick-btn" onclick="quickTest('GET','/api/Gateway')">
-                                <span class="quick-icon">✅</span>
-                                <div><div class="quick-label">Test Gateway (Auth)</div><div class="quick-desc">GET /api/Gateway — requires JWT</div></div>
-                            </button>
-                            <button class="quick-btn" onclick="quickTest('GET','/api/Gateway?q=SELECT * FROM users')">
-                                <span class="quick-icon">🛑</span>
-                                <div><div class="quick-label">SQL Injection Test</div><div class="quick-desc">Should return 400 Bad Request</div></div>
-                            </button>
-                            <button class="quick-btn" onclick="quickTest('GET','/api/Gateway?q=<script>alert(1)</script>')">
-                                <span class="quick-icon">🛡</span>
-                                <div><div class="quick-label">XSS Attack Test</div><div class="quick-desc">Should be blocked by middleware</div></div>
-                            </button>
-                            <button class="quick-btn" onclick="openSwagger()">
-                                <span class="quick-icon">📖</span>
-                                <div><div class="quick-label">Open Swagger UI</div><div class="quick-desc">Full API documentation</div></div>
-                            </button>
+
+                        <div class="tab-row">
+                            <button class="tab-btn active" onclick="showTab('all',this)">All</button>
+                            <button class="tab-btn" onclick="showTab('success',this)">✅ Pass</button>
+                            <button class="tab-btn" onclick="showTab('security',this)">🛡 Security</button>
+                            <button class="tab-btn" onclick="showTab('auth',this)">🔑 Auth</button>
                         </div>
+
+                        <div class="quick-list" id="quickList"></div>
                     </div>
 
-                    <!-- Request log -->
+                    <!-- Request Log -->
                     <div class="panel">
-                        <div class="panel-title">Request Log</div>
+                        <div class="panel-title" style="justify-content:space-between;">
+                            <span style="display:flex;align-items:center;gap:0.5rem;"><span style="content:'';width:3px;height:14px;background:var(--accent);border-radius:2px;display:inline-block;"></span>Request Log</span>
+                            <button class="btn-tiny" onclick="clearLog()">Clear</button>
+                        </div>
                         <div id="logList" class="log-list">
                             <div class="empty-log">No requests yet</div>
                         </div>
                     </div>
 
                 </div>
-            </div>
-        </div>
-    </div>
+            </div><!-- /two-col -->
+        </div><!-- /main -->
+    </div><!-- /dashboard -->
 
     <script>
-const BASE = window.location.origin;
-let token = null, tokenExpiry = null, currentMethod = 'GET';
-let stats = { total:0, ok:0, fail:0 };
-let logs = [];
+        const BASE = window.location.origin;
+        let token = null, tokenExpiry = null, currentMethod = 'GET';
+        let stats = { total: 0, ok: 0, fail: 0 };
+        let logs = [];
 
-async function doLogin() {
-  const username = document.getElementById('username').value.trim();
-  const password = document.getElementById('password').value;
-  const errEl = document.getElementById('loginError');
-  const btn = document.getElementById('loginBtn');
-  errEl.style.display = 'none';
-  if (!username || !password) { showErr('Please enter username and password.'); return; }
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span>Signing in…';
-  try {
+        // ── Quick test definitions ──────────────────────────────────────────────────
+        const QUICK_TESTS = [
+            // ── PASS ──
+            { icon: '✅', label: 'GET Gateway (auth)', desc: 'GET /api/Gateway — valid JWT', method: 'GET', path: '/api/Gateway', body: null, tag: 'success' },
+            { icon: '✅', label: 'POST Gateway (auth)', desc: 'POST /api/Gateway with body', method: 'POST', path: '/api/Gateway', body: '{"action":"ping","value":42}', tag: 'success' },
+            { icon: '✅', label: 'PUT Gateway (auth)', desc: 'PUT /api/Gateway — update request', method: 'PUT', path: '/api/Gateway', body: '{"id":1,"status":"updated"}', tag: 'success' },
+            { icon: '✅', label: 'PATCH Gateway (auth)', desc: 'PATCH /api/Gateway — partial update', method: 'PATCH', path: '/api/Gateway', body: '{"status":"active"}', tag: 'success' },
+            { icon: '✅', label: 'DELETE Gateway (auth)', desc: 'DELETE /api/Gateway — delete request', method: 'DELETE', path: '/api/Gateway', body: null, tag: 'success' },
+
+            // ── SECURITY ──
+            { icon: '🛑', label: 'SQL Injection (GET)', desc: 'SELECT via query → 400 Bad Request', method: 'GET', path: "/api/Gateway?q=SELECT * FROM users WHERE 1=1", body: null, tag: 'security' },
+            { icon: '🛑', label: 'SQL DROP Table', desc: 'DROP TABLE pattern → blocked', method: 'GET', path: "/api/Gateway?q=DROP TABLE users", body: null, tag: 'security' },
+            { icon: '🛑', label: 'SQL UNION Injection', desc: 'UNION-based attack → blocked', method: 'GET', path: "/api/Gateway?q=1 UNION SELECT username,password FROM users--", body: null, tag: 'security' },
+            {
+                icon: '🛡', label: 'XSS Script Tag', desc: '<script> attack → 400 Bad Request', method: 'GET', path: "/api/Gateway?q=<script>alert(1)</script>", body:null, tag:'security' },
+    { icon:'🛡', label:'XSS Event Handler', desc:'onerror= injection → blocked', method:'GET', path:'/api/Gateway?q=<img onerror=alert(1)>', body:null, tag:'security' },
+    { icon:'🛡', label:'XSS javascript: URI', desc:'javascript: protocol → blocked', method:'GET', path:"/api/Gateway?q=javascript:alert('xss')", body:null, tag:'security' },
+    { icon:'🛑', label:'SQL Injection in body (POST)', desc:'POST body with SQL → 400', method:'POST', path:'/api/Gateway', body:'{"input":"admin\'; DROP TABLE users;--"}', tag:'security' },
+
+    // ── AUTH ──
+    { icon:'🔑', label:'No token (GET)', desc:'Omit JWT → 401 Unauthorized', method:'GET', path:'/api/Gateway', body:null, tag:'auth', noToken:true },
+    { icon:'🔑', label:'No token (POST)', desc:'POST without JWT → 401', method:'POST', path:'/api/Gateway', body:'{"test":true}', tag:'auth', noToken:true },
+    { icon:'🔑', label:'No token (DELETE)', desc:'DELETE without JWT → 401', method:'DELETE', path:'/api/Gateway', body:null, tag:'auth', noToken:true },
+    { icon:'📖', label:'Open Swagger UI', desc:'Full API docs in new tab', method:null, path:null, body:null, tag:'auth', special:'swagger' },
+    ];
+
+    let currentTab = 'all';
+
+    function showTab(tab, el) {
+    currentTab = tab;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    renderQuickTests();
+    }
+
+    function renderQuickTests() {
+    const list = document.getElementById('quickList');
+    const filtered = currentTab === 'all' ? QUICK_TESTS : QUICK_TESTS.filter(t => t.tag === currentTab);
+    list.innerHTML = filtered.map((t, i) => {
+    const methodClass = t.method ? `qm-${t.method.toLowerCase()}` : '';
+    const methodBadge = t.method ? `<span class="quick-method ${methodClass}">${t.method}</span>` : '';
+    return `<button class="quick-btn" onclick="runQuickTest(${QUICK_TESTS.indexOf(t)})">
+        <span class="quick-icon">${t.icon}</span>
+        ${methodBadge}
+        <div><div class="quick-label">${t.label}</div><div class="quick-desc">${t.desc}</div></div>
+    </button>`;
+    }).join('');
+    }
+
+    function runQuickTest(idx) {
+    const t = QUICK_TESTS[idx];
+    if (t.special === 'swagger') { openSwagger(); return; }
+    setMethod(t.method, document.getElementById('btn-' + t.method));
+    document.getElementById('pathInput').value = t.path;
+    if (t.body) {
+    document.getElementById('bodyEditor').value = t.body;
+    validateJson();
+    } else {
+    document.getElementById('bodyEditor').value = '';
+    document.getElementById('jsonStatus').textContent = '';
+    }
+    sendRequest(t.noToken ? null : token);
+    }
+
+    // ── Auth ────────────────────────────────────────────────────────────────────
+    async function doLogin() {
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+    const errEl = document.getElementById('loginError');
+    const btn = document.getElementById('loginBtn');
+    errEl.style.display = 'none';
+    if (!username || !password) { showErr('Please enter username and password.'); return; }
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Signing in…';
+    try {
     const res = await fetch(`${BASE}/api/Auth/login`, {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ username, password })
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, password })
     });
     const data = await res.json();
     if (!res.ok) { showErr(data.error || 'Invalid credentials.'); return; }
@@ -869,133 +1147,197 @@ async function doLogin() {
     const payload = JSON.parse(atob(token.split('.')[1]));
     const role = payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || payload.role || 'User';
     showDashboard(username, role);
-  } catch(e) {
+    } catch(e) {
     showErr('Cannot reach the server. Try again.');
-  } finally {
+    } finally {
     btn.disabled = false;
     btn.innerHTML = 'Sign in';
-  }
-}
+    }
+    }
 
-function showErr(msg) {
-  const el = document.getElementById('loginError');
-  el.textContent = msg; el.style.display = 'block';
-}
+    function showErr(msg) {
+    const el = document.getElementById('loginError');
+    el.textContent = msg; el.style.display = 'block';
+    }
 
-function showDashboard(username, role) {
-  document.getElementById('loginPage').style.display = 'none';
-  document.getElementById('dashboard').style.display = 'block';
-  document.getElementById('navUser').textContent = username;
-  document.getElementById('navRole').textContent = role;
-  document.getElementById('tokenDisplay').textContent = token;
-  updateExpiry();
-  setInterval(updateExpiry, 10000);
-}
+    function showDashboard(username, role) {
+    document.getElementById('loginPage').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    document.getElementById('navUser').textContent = username;
+    document.getElementById('navRole').textContent = role;
+    document.getElementById('tokenDisplay').textContent = token;
+    renderQuickTests();
+    updateExpiry();
+    setInterval(updateExpiry, 10000);
+    }
 
-function updateExpiry() {
-  if (!tokenExpiry) return;
-  const secs = Math.max(0, Math.round((tokenExpiry - Date.now()) / 1000));
-  const m = Math.floor(secs/60), s = secs % 60;
-  document.getElementById('statExpiry').textContent = `${m}m ${s}s`;
-}
+    function updateExpiry() {
+    if (!tokenExpiry) return;
+    const secs = Math.max(0, Math.round((tokenExpiry - Date.now()) / 1000));
+    const m = Math.floor(secs / 60), s = secs % 60;
+    document.getElementById('statExpiry').textContent = `${m}m ${s}s`;
+    }
 
-function doLogout() {
-  token = null; tokenExpiry = null;
-  stats = { total:0, ok:0, fail:0 }; logs = [];
-  document.getElementById('loginPage').style.display = 'flex';
-  document.getElementById('dashboard').style.display = 'none';
-  document.getElementById('username').value = '';
-  document.getElementById('password').value = '';
-  document.getElementById('loginError').style.display = 'none';
-}
+    function doLogout() {
+    token = null; tokenExpiry = null;
+    stats = { total:0, ok:0, fail:0 }; logs = [];
+    document.getElementById('loginPage').style.display = 'flex';
+    document.getElementById('dashboard').style.display = 'none';
+    document.getElementById('username').value = '';
+    document.getElementById('password').value = '';
+    document.getElementById('loginError').style.display = 'none';
+    document.getElementById('logList').innerHTML = '<div class="empty-log">No requests yet</div>';
+    ['statTotal','statOk','statFail'].forEach(id => document.getElementById(id).textContent = '0');
+    document.getElementById('statLast').textContent = '—';
+    document.getElementById('statExpiry').textContent = '—';
+    }
 
-function setMethod(m, el) {
-  currentMethod = m;
-  document.querySelectorAll('.method-btn').forEach(b => b.className = 'method-btn');
-  el.classList.add(`active-${m.toLowerCase()}`);
-}
-
-function quickTest(method, path) {
-  currentMethod = method;
-  document.querySelectorAll('.method-btn').forEach(b => b.className = 'method-btn');
-  document.querySelectorAll('.method-btn').forEach(b => {
-    if (b.textContent === method) b.classList.add(`active-${method.toLowerCase()}`);
-  });
-  document.getElementById('pathInput').value = path;
-  sendRequest();
-}
-
-async function sendRequest() {
-  const path = document.getElementById('pathInput').value.trim() || '/api/Gateway';
-  const area = document.getElementById('responseArea');
-  area.innerHTML = '<span class="spinner"></span>Sending…';
-  const t0 = Date.now();
-  try {
-    const res = await fetch(`${BASE}${path}`, {
-      method: currentMethod,
-      headers: { 'Authorization': `Bearer ${token}`, 'Content-Type':'application/json' }
+    // ── Method selector ─────────────────────────────────────────────────────────
+    function setMethod(m, el) {
+    currentMethod = m;
+    document.querySelectorAll('.method-btn').forEach(b => {
+    b.className = 'method-btn';
     });
+    el.classList.add(`active-${m.toLowerCase()}`);
+
+    // Show body editor for methods that send a body
+    const hasBody = ['POST','PUT','PATCH'].includes(m);
+    const editor = document.getElementById('bodyEditor');
+    if (hasBody) {
+    editor.classList.add('visible');
+    if (!editor.value) {
+    editor.value = m === 'PATCH'
+    ? '{\n  "field": "value"\n}'
+    : '{\n  "key": "value"\n}';
+    validateJson();
+    }
+    } else {
+    editor.classList.remove('visible');
+    document.getElementById('jsonStatus').textContent = '';
+    }
+    }
+
+    // ── Body editor helpers ─────────────────────────────────────────────────────
+    function validateJson() {
+    const editor = document.getElementById('bodyEditor');
+    const status = document.getElementById('jsonStatus');
+    const val = editor.value.trim();
+    if (!val) { editor.className = 'visible'; status.textContent = ''; return; }
+    try {
+    JSON.parse(val);
+    editor.classList.remove('json-invalid'); editor.classList.add('json-valid');
+    status.innerHTML = '<span class="json-ok">✓ Valid JSON</span>';
+    } catch(e) {
+    editor.classList.remove('json-valid'); editor.classList.add('json-invalid');
+    status.innerHTML = `<span class="json-err">✗ ${e.message}</span>`;
+    }
+    }
+
+    function formatJson() {
+    const editor = document.getElementById('bodyEditor');
+    try {
+    editor.value = JSON.stringify(JSON.parse(editor.value), null, 2);
+    validateJson();
+    } catch(e) {}
+    }
+
+    function clearBody() {
+    document.getElementById('bodyEditor').value = '';
+    document.getElementById('bodyEditor').className = 'visible';
+    document.getElementById('jsonStatus').textContent = '';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('bodyEditor').addEventListener('input', validateJson);
+    });
+
+    // ── Send request ─────────────────────────────────────────────────────────────
+    async function sendRequest(overrideToken) {
+    const path = document.getElementById('pathInput').value.trim() || '/api/Gateway';
+    const area = document.getElementById('responseArea');
+    area.innerHTML = '<span class="spinner"></span>Sending…';
+
+    const useToken = overrideToken !== undefined ? overrideToken : token;
+
+    const headers = { 'Content-Type': 'application/json' };
+    if (useToken) headers['Authorization'] = `Bearer ${useToken}`;
+
+    const hasBody = ['POST','PUT','PATCH'].includes(currentMethod);
+    const bodyVal = document.getElementById('bodyEditor').value.trim();
+    const body = hasBody && bodyVal ? bodyVal : undefined;
+
+    const t0 = Date.now();
+    try {
+    const res = await fetch(`${BASE}${path}`, { method: currentMethod, headers, body });
     const elapsed = Date.now() - t0;
-    let body;
-    try { body = await res.json(); body = JSON.stringify(body, null, 2); }
-    catch { body = await res.text(); }
+    let bodyText;
+    try { bodyText = JSON.stringify(await res.json(), null, 2); }
+    catch { bodyText = await res.text(); }
     const sc = res.status;
     const cls = sc < 300 ? 's-2xx' : sc < 500 ? 's-4xx' : 's-5xx';
-    area.innerHTML = `<span class="status-pill ${cls}">${sc} ${res.statusText} · ${elapsed}ms</span>\n${escHtml(body)}`;
+    area.innerHTML = `<span class="status-pill ${cls}">${sc} ${res.statusText} · ${elapsed}ms</span>\n${escHtml(bodyText)}`;
     updateStats(sc);
     addLog(currentMethod, path, sc, elapsed);
-  } catch(e) {
+    } catch(e) {
     area.textContent = `Network error: ${e.message}`;
     updateStats(0);
-  }
-}
+    addLog(currentMethod, path, 0, 0);
+    }
+    }
 
-function updateStats(status) {
-  stats.total++;
-  if (status >= 200 && status < 300) stats.ok++;
-  else stats.fail++;
-  document.getElementById('statTotal').textContent = stats.total;
-  document.getElementById('statOk').textContent = stats.ok;
-  document.getElementById('statFail').textContent = stats.fail;
-}
+    function updateStats(status) {
+    stats.total++;
+    if (status >= 200 && status < 300) stats.ok++;
+    else stats.fail++;
+    document.getElementById('statTotal').textContent = stats.total;
+    document.getElementById('statOk').textContent = stats.ok;
+    document.getElementById('statFail').textContent = stats.fail;
+    const lastEl = document.getElementById('statLast');
+    lastEl.textContent = status || 'ERR';
+    lastEl.style.color = status >= 200 && status < 300 ? 'var(--accent)' : 'var(--danger)';
+    }
 
-function addLog(method, path, status, ms) {
-  logs.unshift({ method, path, status, ms, time: new Date().toLocaleTimeString() });
-  if (logs.length > 20) logs.pop();
-  renderLog();
-}
+    function addLog(method, path, status, ms) {
+    logs.unshift({ method, path, status, ms, time: new Date().toLocaleTimeString() });
+    if (logs.length > 30) logs.pop();
+    renderLog();
+    }
 
-function renderLog() {
-  const el = document.getElementById('logList');
-  if (!logs.length) { el.innerHTML = '<div class="empty-log">No requests yet</div>'; return; }
-  const methodColor = { GET:'var(--accent)', POST:'var(--accent2)', PUT:'var(--warning)', DELETE:'var(--danger)' };
-  el.innerHTML = logs.map(l => `
+    function renderLog() {
+    const el = document.getElementById('logList');
+    if (!logs.length) { el.innerHTML = '<div class="empty-log">No requests yet</div>'; return; }
+    const mc = { GET:'var(--accent)', POST:'var(--accent2)', PUT:'var(--warning)', PATCH:'var(--patch)', DELETE:'var(--danger)' };
+    el.innerHTML = logs.map(l => `
     <div class="log-item">
-      <span class="log-method" style="color:${methodColor[l.method]||'var(--text)'}">${l.method}</span>
-      <span class="log-path">${escHtml(l.path)}</span>
-      <span class="log-status ${l.status < 300 ? 's2' : 's4'}">${l.status}</span>
-      <span class="log-time">${l.ms}ms · ${l.time}</span>
+        <span class="log-method" style="color:${mc[l.method]||'var(--text)'}">${l.method}</span>
+        <span class="log-path">${escHtml(l.path)}</span>
+        <span class="log-status ${l.status >= 200 && l.status < 300 ? 's2' : 's4'}">${l.status || 'ERR'}</span>
+        <span class="log-time">${l.ms}ms · ${l.time}</span>
     </div>`).join('');
-}
+    }
 
-function copyToken() {
-  if (!token) return;
-  navigator.clipboard.writeText(token).then(() => {
+    function clearLog() {
+    logs = []; renderLog();
+    }
+
+    function copyToken() {
+    if (!token) return;
+    navigator.clipboard.writeText(token).then(() => {
     const btn = document.querySelector('.btn-copy');
     btn.textContent = 'Copied!'; btn.style.color = 'var(--accent)';
     setTimeout(() => { btn.textContent = 'Copy'; btn.style.color = ''; }, 1500);
-  });
-}
+    });
+    }
 
-function openSwagger() { window.open(`${BASE}/swagger`, '_blank'); }
+    function openSwagger() { window.open(`${BASE}/swagger`, '_blank'); }
 
-function escHtml(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
+    function escHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
 
-document.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && document.getElementById('loginPage').style.display !== 'none') doLogin();
-});
+    document.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && document.getElementById('loginPage').style.display !== 'none') doLogin();
+    });
     </script>
 </body>
 </html>
