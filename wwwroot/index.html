@@ -189,16 +189,88 @@
         .hint {
             text-align: center;
             margin-top: 1.25rem;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             color: var(--text2);
         }
 
-            .hint code {
-                background: var(--bg3);
-                padding: 0.15rem 0.5rem;
-                border-radius: 4px;
-                font-family: var(--mono);
-                font-size: 0.78rem;
+        .hint-toggle {
+            background: none;
+            border: none;
+            color: var(--text2);
+            font-size: 0.75rem;
+            cursor: pointer;
+            font-family: var(--sans);
+            opacity: 0.5;
+            transition: opacity 0.2s;
+            text-decoration: underline dotted;
+        }
+
+            .hint-toggle:hover {
+                opacity: 1;
+            }
+
+        .hint-creds {
+            display: none;
+            margin-top: 0.6rem;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.65rem 1rem;
+            text-align: left;
+        }
+
+            .hint-creds.open {
+                display: block;
+            }
+
+        .hint-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.2rem 0;
+        }
+
+            .hint-row:not(:last-child) {
+                border-bottom: 1px solid var(--border);
+                padding-bottom: 0.4rem;
+                margin-bottom: 0.4rem;
+            }
+
+        .hint-user {
+            font-family: var(--mono);
+            font-size: 0.75rem;
+            color: var(--accent);
+        }
+
+        .hint-pass {
+            font-family: var(--mono);
+            font-size: 0.75rem;
+            color: var(--text2);
+        }
+
+        .hint-role {
+            font-size: 0.68rem;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 0.1rem 0.4rem;
+            color: var(--text2);
+        }
+
+        .btn-autofill {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text2);
+            border-radius: 4px;
+            padding: 0.15rem 0.5rem;
+            font-size: 0.68rem;
+            cursor: pointer;
+            font-family: var(--sans);
+            transition: all 0.15s;
+        }
+
+            .btn-autofill:hover {
+                border-color: var(--accent);
                 color: var(--accent);
             }
 
@@ -918,7 +990,29 @@
                 </div>
                 <button class="btn-primary" id="loginBtn" onclick="doLogin()">Sign in</button>
                 <div class="hint">
-                    Demo: <code>admin</code> / <code>Admin@123</code> &nbsp;|&nbsp; <code>gateway</code> / <code>Gateway@1</code>
+                    <button class="hint-toggle" onclick="toggleHint()">🔑 Show demo credentials</button>
+                    <div class="hint-creds" id="hintCreds">
+                        <div class="hint-row">
+                            <div>
+                                <span class="hint-user">admin</span>
+                                <span class="hint-pass"> / Admin@123</span>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:0.4rem;">
+                                <span class="hint-role">Admin</span>
+                                <button class="btn-autofill" onclick="autofill('admin','Admin@123')">Fill</button>
+                            </div>
+                        </div>
+                        <div class="hint-row">
+                            <div>
+                                <span class="hint-user">gateway</span>
+                                <span class="hint-pass"> / Gateway@1</span>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:0.4rem;">
+                                <span class="hint-role">User</span>
+                                <button class="btn-autofill" onclick="autofill('gateway','Gateway@1')">Fill</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1333,6 +1427,20 @@
 
     function escHtml(s) {
     return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    function toggleHint() {
+    const creds = document.getElementById('hintCreds');
+    const btn = document.querySelector('.hint-toggle');
+    const open = creds.classList.toggle('open');
+    btn.textContent = open ? '🔑 Hide demo credentials' : '🔑 Show demo credentials';
+    }
+
+    function autofill(user, pass) {
+    document.getElementById('username').value = user;
+    document.getElementById('password').value = pass;
+    document.getElementById('hintCreds').classList.remove('open');
+    document.querySelector('.hint-toggle').textContent = '🔑 Show demo credentials';
     }
 
     document.addEventListener('keydown', e => {
