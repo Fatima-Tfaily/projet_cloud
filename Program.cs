@@ -111,6 +111,13 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = "swagger";
 });
 
+// ── Redirect root URL to Swagger ─────────────────────────────────────────────
+
+
+// ── Static files (wwwroot/index.html served at /)
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
 // ── 10. Middleware Pipeline ───────────────────────────────────────────────────
 app.UseMiddleware<RequestLoggingMiddleware>();
 app.UseMiddleware<RateLimitingMiddleware>();
